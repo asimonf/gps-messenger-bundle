@@ -42,7 +42,7 @@ final class GpsReceiver implements ReceiverInterface
     {
         try {
             $messages = $this->pubSubClient
-                ->subscription($this->gpsConfiguration->getSubscriptionName())
+                ->subscription($this->gpsConfiguration->getSubscriptionName(), $this->gpsConfiguration->getQueueName())
                 ->pull(['maxMessages' => $this->gpsConfiguration->getMaxMessagesPull()])
             ;
 
@@ -63,7 +63,7 @@ final class GpsReceiver implements ReceiverInterface
             $gpsReceivedStamp = $this->getGpsReceivedStamp($envelope);
 
             $this->pubSubClient
-                ->subscription($this->gpsConfiguration->getSubscriptionName())
+                ->subscription($this->gpsConfiguration->getSubscriptionName(), $this->gpsConfiguration->getQueueName())
                 ->acknowledge($gpsReceivedStamp->getGpsMessage())
             ;
         } catch (Throwable $exception) {
@@ -85,7 +85,7 @@ final class GpsReceiver implements ReceiverInterface
             $gpsReceivedStamp = $this->getGpsReceivedStamp($envelope);
 
             $this->pubSubClient
-                ->subscription($this->gpsConfiguration->getSubscriptionName())
+                ->subscription($this->gpsConfiguration->getSubscriptionName(), $this->gpsConfiguration->getQueueName())
                 ->modifyAckDeadline($gpsReceivedStamp->getGpsMessage(), 0)
             ;
         } catch (Throwable $exception) {
